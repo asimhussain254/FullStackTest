@@ -10,22 +10,22 @@ namespace FullStackTest.Models
     public class User
     {
         [Key]
-        public int userID { get; set; }
+        public int UserID { get; set; }
+        [Column(TypeName = "varchar(5)")]
+        public string Title { get; set; }
         [Column(TypeName = "varchar(50)")]
-        public string lastName { get; set; }
+        public string LastName { get; set; }
         [Column(TypeName = "varchar(100)")]
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
         [Column(TypeName = "varchar(100)")]
-        public string dateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
         [Column(TypeName = "date")]
-        public string email { get; set; }
+        public string Email { get; set; }
         [Column(TypeName = "varchar(20)")]
-        public string phone { get; set; }
+        public string Phone { get; set; }
         [Column(TypeName = "varchar(10)")]
-        public string gender { get; set; }
+        public string Gender { get; set; }
         [Column(TypeName = "varchar(20)")]
-        public string phone { get; set; }
-        [Column(TypeName = "varchar(20)")]
-        public string language { get; set; }
+        public string Language { get; set; }
     }
 }

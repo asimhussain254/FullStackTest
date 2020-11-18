@@ -10,20 +10,20 @@ namespace FullStackTest.Models
     public class UserViewModel
     {
         [Required]
-        public string lastName { get; set; }
+        public string Title { get; set; }
         [Required]
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
         [Required]
-        public string dateOfBirth { get; set; }
+        public string LastName { get; set; }
         [Required]
-        public string email { get; set; }
+        public string DateOfBirth { get; set; }
         [Required]
-        public string phone { get; set; }
+        public string Email { get; set; }
         [Required]
-        public string gender { get; set; }
+        public string Phone { get; set; }
         [Required]
-        public string phone { get; set; }
+        public string Gender { get; set; }
         [Required]
-        public string language { get; set; }
+        public string Language { get; set; }
     }
 }

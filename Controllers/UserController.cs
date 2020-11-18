@@ -22,50 +22,53 @@ namespace FullStackTest.Controllers
 
         // GET: api/User
         [HttpGet]
-        public IEnumerable<Tbl_User> GetTbl_User()
+        public IEnumerable<User> GetUser()
         {
-            return _context.Tbl_User;
+            return _context.User;
         }
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTbl_User([FromRoute] int id)
+        public async Task<IActionResult> GetUser([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var tbl_User = await _context.Tbl_User.FindAsync(id);
+            var User = await _context.User.FindAsync(id);
 
-            if (tbl_User == null)
+            if (User == null)
             {
                 return NotFound();
             }
 
-            return Ok(tbl_User);
+            return Ok(User);
         }
 
         // PUT: api/User/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTbl_User([FromRoute] int id, [FromBody] UserViewModel userVm)
+        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] UserViewModel userVm)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var user = _context.Tbl_User.Find(id);
+            var user = _context.User.Find(id);
 
             if (user == null)
             {
                 return BadRequest("User does not exist");
             }
 
-            user.Name = userVm.Name;
+            user.Title = userVm.Title;
+            user.FirstName = userVm.FirstName;
+            user.LastName = userVm.LastName;
+            user.DateOfBirth = userVm.DateOfBirth;
             user.Email = userVm.Email;
-            user.Password = userVm.Password;
-            user.NIC = userVm.NIC;
-            user.Address = userVm.Address;
+            user.Phone = userVm.Phone;
+            user.Gender = userVm.Gender;
+            user.Language = userVm.Language;
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -75,7 +78,7 @@ namespace FullStackTest.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Tbl_UserExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -90,48 +93,51 @@ namespace FullStackTest.Controllers
 
         // POST: api/User
         [HttpPost]
-        public async Task<IActionResult> PostTbl_User([FromBody] UserViewModel user)
+        public async Task<IActionResult> PostUser([FromBody] UserViewModel userVm)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            Tbl_User userdata = new Tbl_User();
-            userdata.Name = user.Name;
-            userdata.Email = user.Email;
-            userdata.Password = user.Password;
-            userdata.NIC = user.NIC;
-            userdata.Address = user.Address;
-            _context.Tbl_User.Add(userdata);
+            User user = new User();
+            user.Title = userVm.Title;
+            user.FirstName = userVm.FirstName;
+            user.LastName = userVm.LastName;
+            user.DateOfBirth = userVm.DateOfBirth;
+            user.Email = userVm.Email;
+            user.Phone = userVm.Phone;
+            user.Gender = userVm.Gender;
+            user.Language = userVm.Language;
+            _context.User.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTbl_User", new { id = userdata.UserID }, userdata);
+            return CreatedAtAction("GetUser", new { id = user }, user);
         }
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTbl_User([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var tbl_User = await _context.Tbl_User.FindAsync(id);
-            if (tbl_User == null)
+            var User = await _context.User.FindAsync(id);
+            if (User == null)
             {
                 return NotFound();
             }
 
-            _context.Tbl_User.Remove(tbl_User);
+            _context.User.Remove(User);
             await _context.SaveChangesAsync();
 
-            return Ok(tbl_User);
+            return Ok(User);
         }
 
-        private bool Tbl_UserExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.Tbl_User.Any(e => e.UserID == id);
+            return _context.User.Any(e => e.UserID == id);
         }
     }
 }
