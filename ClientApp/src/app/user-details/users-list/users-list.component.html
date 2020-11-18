@@ -1,0 +1,20 @@
+<table style="text-align: center;" class="table test-center">
+    <tr>
+        <td><b>Name</b> </td>
+        <td><b>Email</b></td>
+        <td><b>NIC</b></td>
+        <td><b>Address</b></td>
+        <td><b>Actions</b></td>
+    </tr>
+    <tr *ngFor="let user of users">
+        <td>{{ user.title }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.gender }}</td>
+        <td>{{ user.phone }}</td>
+        <td>
+            <i class="fas fa-trash-alt fa-lg text-danger" (click)="deleteUser(user)"></i>
+            <i class="fas fa-pencil fa-lg text-primary" (click)="setUser(user)"></i>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,46 @@
+<form #form="ngForm" autocomplete="off" (ngSubmit)="onSubmit()">
+  <input type="hidden" name="UserID" [value]="userData.userID" />
+  <div class="col-md-10 col-md-offset-1">
+    <div class="form-group has-feedback">
+      <select title="title" #title="ngModel" [(ngModel)]="userData.title">
+        <option>Mr.</option>
+        <option>Mrs.</option>
+      </select>
+      <span class="fa fa-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+      <input name="firstName" #Name="ngModel" [(ngModel)]="userData.firstName" type="text" class="form-control"
+        placeholder="Name" required />
+      <span class="fa fa-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+      <input name="lastName" #Name="ngModel" [(ngModel)]="userData.lastName" type="text" class="form-control"
+        placeholder="Name" required />
+      <span class="fa fa-user form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+      <input name="email" #Email="ngModel" [(ngModel)]="userData.email" type="email" class="form-control"
+        placeholder="Email" required />
+      <span class="fa fa-envelope form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+      <input name="phone" #phone="ngModel" [(ngModel)]="userData.phone" type="text" class="form-control"
+        placeholder="phone" required />
+      <span class="fa fa-lock form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+      <!-- Gender Radio List -->
+      <span class="fa fa-id-card form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+      <!-- Language Check List -->
+      <span class="fas fa-map-marker-alt form-control-feedback"></span>
+    </div>
+    <div class="form-group text-center">
+      <button type="submit" onsubmit="onSubmit(form)" class="btn btn-success btn-lg col-md-6 col-md-offset-3">
+        <i class="fas fa-database"></i>
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
