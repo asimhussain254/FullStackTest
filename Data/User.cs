@@ -5,20 +5,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FullStackTest.Models
+namespace FullStackTest.Data
 {
     public class User
     {
-        [Key]
-        public int UserID { get; set; }
+        public int Id { get; set; }
 
-        [MaxLength(5)]
-        public string Title { get; set; }
+        [MaxLength(5)] //enum
+        public Title Title { get; set; }
 
         [MaxLength(50)]
         public string LastName { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(50)]
         public string FirstName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
@@ -30,9 +29,20 @@ namespace FullStackTest.Models
         public string Phone { get; set; }
 
         [MaxLength(10)]
-        public string Gender { get; set; }
-
+        public Gender Gender { get; set; }
+// Gender enum
         [MaxLength(20)]
         public string Language { get; set; }
+    }
+    public enum Gender
+    {
+        Unknown,
+        Male,
+        Female
+    }
+    public enum Title
+    {
+        Mr,
+        Mrs
     }
 }

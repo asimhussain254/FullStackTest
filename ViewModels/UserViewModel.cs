@@ -4,13 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using FullStackTest.Data;
 
-namespace FullStackTest.Models
+namespace FullStackTest.ViewModels
 {
     public class UserViewModel
     {
         [Required]
-        public string Title { get; set; }
+        public Title Title { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -22,8 +23,8 @@ namespace FullStackTest.Models
         [Required]
         public string Phone { get; set; }
         [Required]
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
         [Required]
-        public string Language { get; set; }
+        public string[] Language { get; set; }
     }
 }

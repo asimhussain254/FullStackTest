@@ -25,7 +25,7 @@ export class UsersListComponent implements OnInit {
 
   deleteUser(user: IUser) {
     if (confirm('Are you sure you want to delete the user?')) {
-      this.userService.deleteUser(user.userID).subscribe(
+      this.userService.deleteUser(user.id).subscribe(
         res => {
           this.userService.getUsers();
         },

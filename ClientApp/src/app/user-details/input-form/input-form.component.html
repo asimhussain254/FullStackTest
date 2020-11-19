@@ -1,43 +1,112 @@
 <form #form="ngForm" autocomplete="off" (ngSubmit)="onSubmit()">
-  <input type="hidden" name="UserID" [value]="userData.userID" />
-  <div class="col-md-10 col-md-offset-1">
+  <input type="hidden" #userId="ngModel" name="userID" [(ngModel)]="userData.id" />
+  <div class="col-md-12">
     <div class="form-group has-feedback">
-      <select title="title" #title="ngModel" [(ngModel)]="userData.title">
-        <option>Mr.</option>
-        <option>Mrs.</option>
-      </select>
-      <span class="fa fa-user form-control-feedback"></span>
+      <label>Name</label>
+      <div class="form-row">
+        <div class="col-md-3">
+          <select name="title" #title="ngModel" class="form-control" [(ngModel)]="userData.title")>
+            <option value="mr">Mr.</option>
+            <option value="2">Mrs.</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <input
+            name="firstName"
+            #firstName="ngModel"
+            [(ngModel)]="userData.firstName"
+            type="text"
+            class="form-control"
+            required
+            placeholder="First"
+          />
+        </div>
+        <div class="col-md-5">
+          <input
+            name="lastName"
+            #lastName="ngModel"
+            [(ngModel)]="userData.lastName"
+            type="text"
+            class="form-control"
+            required
+            placeholder="Last"
+          />
+        </div>
+      </div>
+      <!-- <span class="fa fa-user form-control-feedback"></span> -->
     </div>
     <div class="form-group has-feedback">
-      <input name="firstName" #Name="ngModel" [(ngModel)]="userData.firstName" type="text" class="form-control"
-        placeholder="Name" required />
-      <span class="fa fa-user form-control-feedback"></span>
+      <label>Email</label>
+      <input
+        name="email"
+        #Email="ngModel"
+        [(ngModel)]="userData.email"
+        type="email"
+        class="form-control"
+        required
+        placeholder="user@mail.com"
+      />
+      <!-- <span class="fa fa-envelope form-control-feedback"></span> -->
     </div>
     <div class="form-group has-feedback">
-      <input name="lastName" #Name="ngModel" [(ngModel)]="userData.lastName" type="text" class="form-control"
-        placeholder="Name" required />
-      <span class="fa fa-user form-control-feedback"></span>
+      <label>Date Of Birth</label>
+      <input
+        name="dateOfBirth"
+        #dateOfBirth="ngModel"
+        [(ngModel)]="userData.dateOfBirth"
+        type="date"
+        class="form-control"
+        required-
+      />
+      <!-- <span class="fa fa-envelope form-control-feedback"></span> -->
     </div>
     <div class="form-group has-feedback">
-      <input name="email" #Email="ngModel" [(ngModel)]="userData.email" type="email" class="form-control"
-        placeholder="Email" required />
-      <span class="fa fa-envelope form-control-feedback"></span>
+      <label>Phone No.</label>
+      <input
+        name="phone"
+        #phone="ngModel"
+        [(ngModel)]="userData.phone"
+        type="text"
+        class="form-control"
+        required
+      />
+      <!-- <span class="fa fa-lock form-control-feedback"></span> -->
     </div>
     <div class="form-group has-feedback">
-      <input name="phone" #phone="ngModel" [(ngModel)]="userData.phone" type="text" class="form-control"
-        placeholder="phone" required />
-      <span class="fa fa-lock form-control-feedback"></span>
+      <!-- <span class="fa fa-id-card form-control-feedback"></span> -->
+      <label>Gender</label>
+      <div class="form-control">
+        <div class="form-row">
+          <div class="col-md-6">
+            <label class="radio-inline">
+              <input name="gender" type="radio" value="male" [(ngModel)]="userData.gender" />
+              Male
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="radio-inline">
+              <input name="gender" type="radio" value="female" [(ngModel)]="userData.gender" />
+              Female
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="form-group has-feedback">
-      <!-- Gender Radio List -->
-      <span class="fa fa-id-card form-control-feedback"></span>
-    </div>
-    <div class="form-group has-feedback">
-      <!-- Language Check List -->
-      <span class="fas fa-map-marker-alt form-control-feedback"></span>
+      <label>Languages</label>
+      <div class="form-control">
+        <div class="form-row" >
+          <div class="col-md-4" *ngFor="let item of languages">
+            <label>
+              <input name="languages" type="checkbox" value="{{item.value}}" [(ngModel)]="item.checked" />
+              {{item.name}}
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="form-group text-center">
-      <button type="submit" onsubmit="onSubmit(form)" class="btn btn-success btn-lg col-md-6 col-md-offset-3">
+      <button type="submit" class="btn btn-success btn-lg col-md-6 col-md-offset-3">
         <i class="fas fa-database"></i>
         Submit
       </button>

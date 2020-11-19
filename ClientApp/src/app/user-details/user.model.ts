@@ -1,11 +1,11 @@
 export interface IUser {
-  userID: number;
-  title: string;
+  id: number;
+  title: number;
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
   email: string;
   phone: string;
-  gender: string;
-  language: string;
+  gender: number;
+  language:string[];
 }

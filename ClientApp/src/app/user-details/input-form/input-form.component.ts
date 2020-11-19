@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-// import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '../user.service';
-// import { ToastService } from './../../toast.service';
 
 @Component({
   selector: 'app-input-form',
@@ -11,30 +9,40 @@ import { UserService } from '../user.service';
   styleUrls: ['./input-form.component.css'],
 })
 export class InputFormComponent implements OnInit {
-  @ViewChild('form',{static: true}) userForm: NgForm;
-
-  constructor(private userService: UserService) { }
+  @ViewChild('form', { static: false }) userForm: NgForm;
+  languages = [
+    { name: 'Urdu', value: '1', checked: false },
+    { name: 'English', value: '2', checked: false },
+    { name: 'Arabic', value: '3', checked: false },
+  ];
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.resetForm();
+    // this.resetForm();
   }
 
   get userData() {
     return this.userService.selectedUser;
   }
-
+  get selectedOptions() {
+    // right now: ['1','3']
+    return this.languages.filter((opt) => opt.checked).map((opt) => opt.value);
+  }
   onSubmit() {
     // Destructure value and valid properties from form object
     const { value, valid } = this.userForm;
     if (valid) {
-      const isNew = this.userService.selectedUser.userID === 0;
+      const isNew = this.userService.selectedUser.id === 0;
       var subscription;
       if (isNew) {
-        subscription = this.userService.createUser(value);
-      }
-      else {
-        subscription = this.userService.updateUser(this.userService.selectedUser.userID,
-          { ...value, userID: null });
+        subscription = this.userService.createUser({...value,
+        language:this.selectedOptions});
+      } else {
+        subscription = this.userService.updateUser(this.userService.selectedUser.id, {
+          ...value,
+          id: null,
+          language:this.selectedOptions
+        });
       }
       subscription.subscribe(
         (res) => {
@@ -44,23 +52,23 @@ export class InputFormComponent implements OnInit {
         },
         (err) => {
           console.log(err);
-
         },
       );
     }
   }
+
   private resetForm() {
     this.userForm.reset();
     this.userService.selectedUser = {
-      userID: 0,
+      id: 0,
       firstName: '',
       lastName: '',
       email: '',
       phone: '',
       dateOfBirth: null,
-      language: '',
-      title: '',
-      gender:''
+      title: 0,
+      gender: 0,
+      language:null
     };
   }
 }

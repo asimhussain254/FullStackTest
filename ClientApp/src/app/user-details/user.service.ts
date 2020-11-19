@@ -1,3 +1,4 @@
+import { InputFormComponent } from './input-form/input-form.component';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -7,7 +8,7 @@ import { IUser } from './user.model';
   providedIn: 'root',
 })
 export class UserService {
-  selectedUser: IUser;
+  selectedUser: IUser = {} as any;
   userList: IUser[];
   constructor(private httpClient: HttpClient) {}
 

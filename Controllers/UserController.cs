@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FullStackTest.Models;
+using FullStackTest.Data;
+using FullStackTest.ViewModels;
 
 namespace FullStackTest.Controllers
 {
@@ -68,7 +69,6 @@ namespace FullStackTest.Controllers
             user.Email = userVm.Email;
             user.Phone = userVm.Phone;
             user.Gender = userVm.Gender;
-            user.Language = userVm.Language;
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -107,11 +107,17 @@ namespace FullStackTest.Controllers
             user.Email = userVm.Email;
             user.Phone = userVm.Phone;
             user.Gender = userVm.Gender;
-            user.Language = userVm.Language;
             _context.User.Add(user);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user }, user);
+            for (int i = 0; i < userVm.Language.Length; i++)
+            {
+                UserLanguages languages = new UserLanguages();
+                languages.Title = userVm.Language[i];
+                languages.UserId = user.Id;
+                _context.UserLanguages.Add(languages);
+                await _context.SaveChangesAsync();
+            }
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         // DELETE: api/User/5
@@ -137,7 +143,7 @@ namespace FullStackTest.Controllers
 
         private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.UserID == id);
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }

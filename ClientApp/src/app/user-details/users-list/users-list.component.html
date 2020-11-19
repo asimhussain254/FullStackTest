@@ -1,15 +1,16 @@
-<table style="text-align: center;" class="table test-center">
+<table class="table text-center">
     <tr>
-        <td><b>Name</b> </td>
+        <td><b>First Name</b> </td>
+        <td><b>Last Name</b></td>
         <td><b>Email</b></td>
-        <td><b>NIC</b></td>
-        <td><b>Address</b></td>
+        <td><b>Gender</b></td>
+        <td><b>Phone</b></td>
         <td><b>Actions</b></td>
     </tr>
     <tr *ngFor="let user of users">
-        <td>{{ user.title }}</td>
         <td>{{ user.firstName }}</td>
         <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
         <td>{{ user.gender }}</td>
         <td>{{ user.phone }}</td>
         <td>
