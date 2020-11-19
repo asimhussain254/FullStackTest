@@ -16,7 +16,7 @@ namespace FullStackTest.Models
         [Required]
         public string LastName { get; set; }
         [Required]
-        public string DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]

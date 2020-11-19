@@ -11,21 +11,28 @@ namespace FullStackTest.Models
     {
         [Key]
         public int UserID { get; set; }
-        [Column(TypeName = "varchar(5)")]
+
+        [MaxLength(5)]
         public string Title { get; set; }
-        [Column(TypeName = "varchar(50)")]
+
+        [MaxLength(50)]
         public string LastName { get; set; }
-        [Column(TypeName = "varchar(100)")]
+
+        [MaxLength(100)]
         public string FirstName { get; set; }
-        [Column(TypeName = "varchar(100)")]
-        public string DateOfBirth { get; set; }
-        [Column(TypeName = "date")]
+
+        public DateTime DateOfBirth { get; set; }
+
+        [MaxLength(50)]
         public string Email { get; set; }
-        [Column(TypeName = "varchar(20)")]
+
+        [MaxLength(20)]
         public string Phone { get; set; }
-        [Column(TypeName = "varchar(10)")]
+
+        [MaxLength(10)]
         public string Gender { get; set; }
-        [Column(TypeName = "varchar(20)")]
+
+        [MaxLength(20)]
         public string Language { get; set; }
     }
 }
