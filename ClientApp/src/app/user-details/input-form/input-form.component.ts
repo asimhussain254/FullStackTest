@@ -18,7 +18,7 @@ export class InputFormComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    // this.resetForm();
+    this.resetForm();
   }
 
   get userData() {
@@ -35,13 +35,12 @@ export class InputFormComponent implements OnInit {
       const isNew = this.userService.selectedUser.id === 0;
       var subscription;
       if (isNew) {
-        subscription = this.userService.createUser({...value,
-        language:this.selectedOptions});
+        subscription = this.userService.createUser({ ...value, language: this.selectedOptions });
       } else {
         subscription = this.userService.updateUser(this.userService.selectedUser.id, {
           ...value,
           id: null,
-          language:this.selectedOptions
+          language: this.selectedOptions,
         });
       }
       subscription.subscribe(
@@ -68,7 +67,7 @@ export class InputFormComponent implements OnInit {
       dateOfBirth: null,
       title: 0,
       gender: 0,
-      language:null
+      language: null,
     };
   }
 }

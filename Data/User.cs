@@ -30,13 +30,9 @@ namespace FullStackTest.Data
 
         [MaxLength(10)]
         public Gender Gender { get; set; }
-// Gender enum
-        [MaxLength(20)]
-        public string Language { get; set; }
     }
     public enum Gender
     {
-        Unknown,
         Male,
         Female
     }

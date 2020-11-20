@@ -8,7 +8,7 @@ import { IUser } from './user.model';
   providedIn: 'root',
 })
 export class UserService {
-  selectedUser: IUser = {} as any;
+  selectedUser: IUser = {id:0} as any;
   userList: IUser[];
   constructor(private httpClient: HttpClient) {}
 

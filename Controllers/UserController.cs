@@ -25,6 +25,7 @@ namespace FullStackTest.Controllers
         [HttpGet]
         public IEnumerable<User> GetUser()
         {
+            
             return _context.User;
         }
 
