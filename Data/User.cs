@@ -31,14 +31,4 @@ namespace FullStackTest.Data
         [MaxLength(10)]
         public Gender Gender { get; set; }
     }
-    public enum Gender
-    {
-        Male,
-        Female
-    }
-    public enum Title
-    {
-        Mr,
-        Mrs
-    }
 }

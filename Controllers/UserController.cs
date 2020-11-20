@@ -25,7 +25,7 @@ namespace FullStackTest.Controllers
         [HttpGet]
         public IEnumerable<User> GetUser()
         {
-            
+
             return _context.User;
         }
 
@@ -100,25 +100,35 @@ namespace FullStackTest.Controllers
             {
                 return BadRequest(ModelState);
             }
-            User user = new User();
-            user.Title = userVm.Title;
-            user.FirstName = userVm.FirstName;
-            user.LastName = userVm.LastName;
-            user.DateOfBirth = userVm.DateOfBirth;
-            user.Email = userVm.Email;
-            user.Phone = userVm.Phone;
-            user.Gender = userVm.Gender;
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
-            for (int i = 0; i < userVm.Language.Length; i++)
+
+            var user = new User
             {
-                UserLanguages languages = new UserLanguages();
-                languages.Title = userVm.Language[i];
-                languages.UserId = user.Id;
-                _context.UserLanguages.Add(languages);
-                await _context.SaveChangesAsync();
-            }
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+                Title = userVm.Title,
+                FirstName = userVm.FirstName,
+                LastName = userVm.LastName,
+                DateOfBirth = userVm.DateOfBirth,
+                Email = userVm.Email,
+                Phone = userVm.Phone,
+                Gender = userVm.Gender,
+            };
+
+            await _context.User.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            var languages = userVm.Languages.Select(language => new UserLanguages
+            {
+                Title = language,
+                UserId = user.Id
+            }).ToList();
+            
+            await _context.UserLanguages.AddRangeAsync(languages);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUser", new
+            {
+                id = user.Id
+            }, user);
         }
 
         // DELETE: api/User/5

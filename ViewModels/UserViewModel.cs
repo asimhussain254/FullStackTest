@@ -26,6 +26,6 @@ namespace FullStackTest.ViewModels
         [Required]
         public Gender Gender { get; set; }
         [Required]
-        public string[] Language { get; set; }
+        public string[] Languages { get; set; }
     }
 }

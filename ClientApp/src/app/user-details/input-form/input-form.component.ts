@@ -35,12 +35,12 @@ export class InputFormComponent implements OnInit {
       const isNew = this.userService.selectedUser.id === 0;
       let subscription;
       if (isNew) {
-        subscription = this.userService.createUser({ ...value, language: this.selectedOptions });
+        subscription = this.userService.createUser({ ...value, languages: this.selectedOptions });
       } else {
         subscription = this.userService.updateUser(this.userService.selectedUser.id, {
           ...value,
           id: null,
-          language: this.selectedOptions,
+          languages: this.selectedOptions,
         });
       }
       subscription.subscribe(
@@ -67,7 +67,7 @@ export class InputFormComponent implements OnInit {
       dateOfBirth: null,
       title: 0,
       gender: 0,
-      language: null,
+      languages: null,
     };
   }
 }
