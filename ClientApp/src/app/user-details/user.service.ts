@@ -8,12 +8,14 @@ import { IUser } from './user.model';
   providedIn: 'root',
 })
 export class UserService {
-  selectedUser: IUser = {id:0} as any;
+  selectedUser: IUser = { id: 0 } as any;
   userList: IUser[];
   constructor(private httpClient: HttpClient) {}
 
   getUsers() {
-    this.httpClient.get('https://localhost:5001/api/User').subscribe((res) => (this.userList = res as IUser[]));
+    this.httpClient
+      .get('https://localhost:5001/api/User')
+      .subscribe((res) => (this.userList = res as IUser[]));
   }
 
   createUser(user: IUser) {

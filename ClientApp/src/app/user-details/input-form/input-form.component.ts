@@ -33,7 +33,7 @@ export class InputFormComponent implements OnInit {
     const { value, valid } = this.userForm;
     if (valid) {
       const isNew = this.userService.selectedUser.id === 0;
-      var subscription;
+      let subscription;
       if (isNew) {
         subscription = this.userService.createUser({ ...value, language: this.selectedOptions });
       } else {
