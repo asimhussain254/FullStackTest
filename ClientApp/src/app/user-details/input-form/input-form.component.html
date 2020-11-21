@@ -97,15 +97,16 @@
       <label>Languages</label>
       <div class="form-control">
         <div class="form-row">
-          <div class="col-md-4" *ngFor="let item of languages">
+          <div class="col-md-4" *ngFor="let item of this.userService.languageList">
             <label>
               <input
-                name="languages"
                 type="checkbox"
-                value="{{ item.value }}"
-                [(ngModel)]="item.checked"
+                name="languages"
+                checked="false"
+                [value]="item.status"
+                [(ngModel)]="this.userService.languageList"
               />
-              {{ item.name }}
+              {{ item.title }}
             </label>
           </div>
         </div>

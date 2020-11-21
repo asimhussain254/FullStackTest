@@ -30,5 +30,6 @@ namespace FullStackTest.Data
 
         [MaxLength(10)]
         public Gender Gender { get; set; }
+        public List<UserLanguage> Languages { get; set; } = new List<UserLanguage>();
     }
 }

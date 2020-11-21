@@ -20,13 +20,30 @@ namespace FullStackTest.Controllers
         {
             _context = context;
         }
-
+        [HttpGet]
+        [Route("api/Language")]
+        public IEnumerable<Language> GetLanguage()
+        {
+            return _context.Language;
+        }
         // GET: api/User
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<UserViewModel> GetUser()
         {
 
-            return _context.User;
+            var userVmList = _context.User.Include(x => x.Languages).Select(x => new UserViewModel
+            {
+                id = x.Id,
+                Title = x.Title,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                DateOfBirth = x.DateOfBirth,
+                Email = x.Email,
+                Phone = x.Phone,
+                Gender = x.Gender,
+                Languages = x.Languages.Select(x => x.LanguageId).ToList()
+            }).ToList();
+            return userVmList;
         }
 
         // GET: api/User/5
@@ -115,12 +132,12 @@ namespace FullStackTest.Controllers
             await _context.User.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            var languages = userVm.Languages.Select(language => new UserLanguages
+            var languages = userVm.Languages.Select(language => new UserLanguage
             {
-                Title = language,
+                LanguageId = (int)language,
                 UserId = user.Id
             }).ToList();
-            
+
             await _context.UserLanguages.AddRangeAsync(languages);
 
             await _context.SaveChangesAsync();

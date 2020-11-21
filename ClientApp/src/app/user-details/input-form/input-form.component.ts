@@ -1,3 +1,4 @@
+import { ILanguage } from './../language.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
@@ -10,13 +11,9 @@ import { UserService } from '../user.service';
 })
 export class InputFormComponent implements OnInit {
   @ViewChild('form', { static: false }) userForm: NgForm;
-  languages = [
-    { name: 'Urdu', value: '1', checked: false },
-    { name: 'English', value: '2', checked: false },
-    { name: 'Arabic', value: '3', checked: false },
-  ];
-  constructor(private userService: UserService) {}
-
+  constructor(public userService: UserService) {
+    this.userService.getLanguages();
+  }
   ngOnInit() {
     this.resetForm();
   }
@@ -24,9 +21,8 @@ export class InputFormComponent implements OnInit {
   get userData() {
     return this.userService.selectedUser;
   }
-  get selectedOptions() {
-    // right now: ['1','3']
-    return this.languages.filter((opt) => opt.checked).map((opt) => opt.value);
+  get languages() {
+    return {... this.userService.languageList};
   }
   onSubmit() {
     // Destructure value and valid properties from form object
@@ -35,13 +31,17 @@ export class InputFormComponent implements OnInit {
       const isNew = this.userService.selectedUser.id === 0;
       let subscription;
       if (isNew) {
-        subscription = this.userService.createUser({ ...value, languages: this.selectedOptions });
-      } else {
-        subscription = this.userService.updateUser(this.userService.selectedUser.id, {
+        subscription = this.userService.createUser({
           ...value,
-          id: null,
-          languages: this.selectedOptions,
         });
+      } else {
+        subscription = this.userService.updateUser(
+          this.userService.selectedUser.id,
+          {
+            ...value,
+            id: null,
+          },
+        );
       }
       subscription.subscribe(
         (res) => {
