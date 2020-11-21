@@ -74,12 +74,13 @@ namespace FullStackTest.Controllers
                 return BadRequest(ModelState);
             }
             var user = _context.User.Find(id);
+            var languages = _context.UserLanguages.Where(x => x.UserId == user.Id);
 
             if (user == null)
             {
                 return BadRequest("User does not exist");
             }
-
+            //Update data in User Entity
             user.Title = userVm.Title;
             user.FirstName = userVm.FirstName;
             user.LastName = userVm.LastName;
@@ -87,6 +88,18 @@ namespace FullStackTest.Controllers
             user.Email = userVm.Email;
             user.Phone = userVm.Phone;
             user.Gender = userVm.Gender;
+            // remove current languages of users
+            _context.UserLanguages.RemoveRange(languages);
+            await _context.SaveChangesAsync();
+            // Make list of Languages user select now
+            var userlanguages = userVm.Languages.Select(language => new UserLanguage
+            {
+                LanguageId = (int)language,
+                UserId = user.Id
+            }).ToList();
+            // Add Languages to UserLanguages Entity
+            await _context.UserLanguages.AddRangeAsync(userlanguages);
+            await _context.SaveChangesAsync();
 
             _context.Entry(user).State = EntityState.Modified;
 
