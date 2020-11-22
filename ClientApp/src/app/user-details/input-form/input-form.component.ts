@@ -1,6 +1,6 @@
-import { ILanguage } from './../language.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ILanguage } from '../language.model';
 
 import { UserService } from '../user.service';
 
@@ -10,11 +10,11 @@ import { UserService } from '../user.service';
   styleUrls: ['./input-form.component.css'],
 })
 export class InputFormComponent implements OnInit {
-  @ViewChild('form', { static: false }) userForm: NgForm;
-  constructor(public userService: UserService) {
-    this.userService.getLanguages();
-  }
+  @ViewChild('form', { static: true }) userForm: NgForm;
+  constructor(public userService: UserService) {}
+
   ngOnInit() {
+    this.userService.getLanguages();
     this.resetForm();
   }
 
@@ -22,8 +22,21 @@ export class InputFormComponent implements OnInit {
     return this.userService.selectedUser;
   }
   get languages() {
-    return {... this.userService.languageList};
+    return { ...this.userService.languageList };
   }
+
+  getLanguageModel(langualge: ILanguage) {
+    return this.userData.languages.find((x) => x === langualge.id);
+  }
+
+  onLanguageChange(checked, language: ILanguage) {
+    if (checked) {
+      this.userData.languages.push(language.id);
+    } else {
+      this.userData.languages = this.userData.languages.filter((l) => l !== language.id);
+    }
+  }
+
   onSubmit() {
     // Destructure value and valid properties from form object
     const { value, valid } = this.userForm;
@@ -35,13 +48,10 @@ export class InputFormComponent implements OnInit {
           ...value,
         });
       } else {
-        subscription = this.userService.updateUser(
-          this.userService.selectedUser.id,
-          {
-            ...value,
-            id: null,
-          },
-        );
+        subscription = this.userService.updateUser(this.userService.selectedUser.id, {
+          ...value,
+          id: null,
+        });
       }
       subscription.subscribe(
         (res) => {
@@ -67,7 +77,7 @@ export class InputFormComponent implements OnInit {
       dateOfBirth: null,
       title: 0,
       gender: 0,
-      languages: null,
+      languages: [],
     };
   }
 }

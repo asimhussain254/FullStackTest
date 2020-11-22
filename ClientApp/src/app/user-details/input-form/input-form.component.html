@@ -1,3 +1,4 @@
+{{ userData | json }}
 <form #form="ngForm" autocomplete="off" (ngSubmit)="onSubmit()">
   <input #userId type="hidden" name="UserID" [value]="userData.id" value="0" />
   <div class="col-md-12">
@@ -102,9 +103,9 @@
               <input
                 type="checkbox"
                 name="languages"
-                checked="false"
-                [value]="item.status"
-                [(ngModel)]="this.userService.languageList"
+                [value]="item.id"
+                [checked]="getLanguageModel(item)"
+                (change)="onLanguageChange($event.target.checked, item)"
               />
               {{ item.title }}
             </label>

@@ -1,5 +1,4 @@
 import { ILanguage } from './language.model';
-import { InputFormComponent } from './input-form/input-form.component';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -9,33 +8,28 @@ import { IUser } from './user.model';
   providedIn: 'root',
 })
 export class UserService {
-  selectedUser: IUser = { id: 0 } as any;
+  selectedUser: IUser = { id: 0, languages: [] } as any;
   userList: IUser[];
   languageList: ILanguage[];
   constructor(private httpClient: HttpClient) {}
 
   getUsers() {
-    this.httpClient
-      .get('https://localhost:5001/api/User')
-      .subscribe((res) => (this.userList = res as IUser[]));
+    this.httpClient.get('api/User').subscribe((res) => (this.userList = res as IUser[]));
   }
   getLanguages() {
     this.httpClient
-      .get('https://localhost:5001/api/Language')
+      .get('api/Language')
       .subscribe((res) => (this.languageList = res as ILanguage[]));
   }
 
   createUser(user: IUser) {
-    return this.httpClient.post('https://localhost:5001/api/User', user);
+    return this.httpClient.post('api/User', user);
   }
 
   updateUser(userId: number, user: IUser) {
-    return this.httpClient.put(
-      `https://localhost:5001/api/User/${userId}`,
-      user,
-    );
+    return this.httpClient.put(`api/User/${userId}`, user);
   }
   deleteUser(userId: number) {
-    return this.httpClient.delete(`https://localhost:5001/api/User/${userId}`);
+    return this.httpClient.delete(`api/User/${userId}`);
   }
 }
