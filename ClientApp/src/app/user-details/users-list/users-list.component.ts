@@ -9,7 +9,7 @@ import { UserService } from '../user.service';
   styleUrls: ['./users-list.component.css'],
 })
 export class UsersListComponent implements OnInit {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.userService.getUsers();
@@ -26,12 +26,12 @@ export class UsersListComponent implements OnInit {
   deleteUser(user: IUser) {
     if (confirm('Are you sure you want to delete the user?')) {
       this.userService.deleteUser(user.id).subscribe(
-        res => {
+        (res) => {
           this.userService.getUsers();
         },
-        err => {
+        (err) => {
           console.log(err);
-        }
+        },
       );
     }
   }

@@ -8,4 +8,5 @@ export interface IUser {
   phone: string;
   gender: number;
   languages: number[];
+  languagesTitles: string[];
 }

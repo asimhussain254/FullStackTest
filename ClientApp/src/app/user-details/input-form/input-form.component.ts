@@ -36,7 +36,9 @@ export class InputFormComponent implements OnInit {
       this.userData.languages = this.userData.languages.filter((l) => l !== language.id);
     }
   }
-
+  updateDate(date:Date){
+      this.userData.dateOfBirth = date;
+  }
   onSubmit() {
     // Destructure value and valid properties from form object
     const { value, valid } = this.userForm;
@@ -46,11 +48,13 @@ export class InputFormComponent implements OnInit {
       if (isNew) {
         subscription = this.userService.createUser({
           ...value,
+          languages:this.userData.languages
         });
       } else {
         subscription = this.userService.updateUser(this.userService.selectedUser.id, {
           ...value,
           id: null,
+          languages:this.userData.languages
         });
       }
       subscription.subscribe(
@@ -78,6 +82,7 @@ export class InputFormComponent implements OnInit {
       title: 0,
       gender: 0,
       languages: [],
+      languagesTitles: [],
     };
   }
 }

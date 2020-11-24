@@ -41,7 +41,8 @@ namespace FullStackTest.Controllers
                 Email = x.Email,
                 Phone = x.Phone,
                 Gender = x.Gender,
-                Languages = x.Languages.Select(x => x.LanguageId).ToList()
+                Languages = x.Languages.Select(x => x.LanguageId).ToList(),
+                LanguagesTitles = x.Languages.Select(x => x.Language.Title).ToList()
             }).ToList();
             return userVmList;
         }
@@ -170,13 +171,16 @@ namespace FullStackTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var User = await _context.User.FindAsync(id);
-            if (User == null)
+            var user = await _context.User.FindAsync(id);
+            // var languages = _context.UserLanguage.Where(i => i.UserId == user.Id);
+            var languages = _context.UserLanguages.Where(i => i.UserId == user.Id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.User.Remove(User);
+            _context.User.Remove(user);
+            _context.UserLanguages.RemoveRange(languages);
             await _context.SaveChangesAsync();
 
             return Ok(User);

@@ -7,9 +7,9 @@
       <div class="form-row">
         <div class="col-md-3">
           <select name="title" class="form-control" [(ngModel)]="userData.title">
-            <option>Please Select</option>
-            <option [ngValue]="0">Mr.</option>
-            <option [ngValue]="1">Mrs.</option>
+            <option value="0">Select.</option>
+            <option [ngValue]="1">Mr.</option>
+            <option [ngValue]="2">Mrs.</option>
           </select>
         </div>
         <div class="col-md-4">
@@ -55,10 +55,11 @@
       <input
         name="dateOfBirth"
         #dateOfBirth="ngModel"
-        [(ngModel)]="userData.dateOfBirth"
+        [ngModel]="userData.dateOfBirth | date:'yyyy-MM-dd'"
+        (change)="updateDate(dateOfBirth.value)"
         type="date"
         class="form-control"
-        required-
+        required
       />
       <!-- <span class="fa fa-envelope form-control-feedback"></span> -->
     </div>
@@ -81,13 +82,13 @@
         <div class="form-row">
           <div class="col-md-6">
             <label class="radio-inline">
-              <input name="gender" type="radio" [value]="0" [(ngModel)]="userData.gender" />
+              <input name="gender" type="radio" [value]="1" [(ngModel)]="userData.gender" />
               Male
             </label>
           </div>
           <div class="col-md-6">
             <label class="radio-inline">
-              <input name="gender" type="radio" [value]="1" [(ngModel)]="userData.gender" />
+              <input name="gender" type="radio" [value]="2" [(ngModel)]="userData.gender" />
               Female
             </label>
           </div>
