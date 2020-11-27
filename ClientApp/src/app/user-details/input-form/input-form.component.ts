@@ -11,28 +11,28 @@ import { UserService } from '../user.service';
   styleUrls: ['./input-form.component.css'],
 })
 export class InputFormComponent implements OnInit {
-  userForm:FormGroup;
-  // @ViewChild('form', { static: true }) userForm: NgForm;
+  userForm: FormGroup;
   constructor(public userService: UserService, private toastService: ToastService) {}
 
   ngOnInit() {
     this.userService.getLanguages();
-    this.resetForm();
     this.userForm = new FormGroup({
+      title: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      phoneNumber: new FormControl(
-        '',
-        [Validators.required,
-        Validators.pattern(
-          '(^+[0-9]{2}|^+[0-9]{2}(0)|^(+[0-9]{2})(0)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9-s]{10}$)',
-        ),
+      phoneNumber: new FormControl('', [
+        Validators.required,
+        // Validators.pattern(
+        //   '(^+[0-9]{2}|^+[0-9]{2}(0)|^(+[0-9]{2})(0)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9-s]{10}$)',
+        // ),
       ]),
-      dateOfBirth:new FormControl (null, [Validators.required]),
+      dateOfBirth: new FormControl(null, [Validators.required]),
       gender: new FormControl(null, [Validators.required]),
     });
+    this.resetForm();
   }
+
   getLName() {
     return this.userForm.get('lasttName');
   }
@@ -45,6 +45,7 @@ export class InputFormComponent implements OnInit {
   getDOB() {
     return this.userForm.get('dateOfBirth');
   }
+
   get userData() {
     return this.userService.selectedUser;
   }
