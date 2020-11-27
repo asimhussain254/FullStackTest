@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILanguage } from '../language.model';
 
+import { ToastService } from './../../toast.service';
 import { UserService } from '../user.service';
 
 @Component({
@@ -10,14 +11,40 @@ import { UserService } from '../user.service';
   styleUrls: ['./input-form.component.css'],
 })
 export class InputFormComponent implements OnInit {
-  @ViewChild('form', { static: true }) userForm: NgForm;
-  constructor(public userService: UserService) {}
+  userForm:FormGroup;
+  // @ViewChild('form', { static: true }) userForm: NgForm;
+  constructor(public userService: UserService, private toastService: ToastService) {}
 
   ngOnInit() {
     this.userService.getLanguages();
     this.resetForm();
+    this.userForm = new FormGroup({
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      phoneNumber: new FormControl(
+        '',
+        [Validators.required,
+        Validators.pattern(
+          '(^+[0-9]{2}|^+[0-9]{2}(0)|^(+[0-9]{2})(0)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9-s]{10}$)',
+        ),
+      ]),
+      dateOfBirth:new FormControl (null, [Validators.required]),
+      gender: new FormControl(null, [Validators.required]),
+    });
   }
-
+  getLName() {
+    return this.userForm.get('lasttName');
+  }
+  getEmail() {
+    return this.userForm.get('email');
+  }
+  getPhone() {
+    return this.userForm.get('phoneNumber');
+  }
+  getDOB() {
+    return this.userForm.get('dateOfBirth');
+  }
   get userData() {
     return this.userService.selectedUser;
   }
@@ -36,8 +63,8 @@ export class InputFormComponent implements OnInit {
       this.userData.languages = this.userData.languages.filter((l) => l !== language.id);
     }
   }
-  updateDate(date:Date){
-      this.userData.dateOfBirth = date;
+  updateDate(date: Date) {
+    this.userData.dateOfBirth = date;
   }
   onSubmit() {
     // Destructure value and valid properties from form object
@@ -48,20 +75,23 @@ export class InputFormComponent implements OnInit {
       if (isNew) {
         subscription = this.userService.createUser({
           ...value,
-          languages:this.userData.languages
+          languages: this.userData.languages,
         });
       } else {
         subscription = this.userService.updateUser(this.userService.selectedUser.id, {
           ...value,
           id: null,
-          languages:this.userData.languages
+          languages: this.userData.languages,
         });
       }
       subscription.subscribe(
         (res) => {
           this.resetForm();
           this.userService.getUsers();
-          // this.toastr.success(`Record is updated.`,"Success")
+          this.toastService.show('I am a success toast', {
+            classname: 'bg-success text-light',
+            delay: 10000,
+          });
         },
         (err) => {
           console.log(err);
