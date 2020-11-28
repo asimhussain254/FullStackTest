@@ -92,10 +92,7 @@ export class InputFormComponent implements OnInit, OnChanges {
         () => {
           this.reset();
           this.userService.getUsers();
-          this.toastService.show('I am a success toast', {
-            classname: 'bg-success text-light',
-            delay: 10000,
-          });
+          this.toastService.success('I am a success toast');
         },
         (err) => {
           console.log(err);

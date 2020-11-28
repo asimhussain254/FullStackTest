@@ -4,7 +4,15 @@ import { Injectable, TemplateRef } from '@angular/core';
 export class ToastService {
   toasts: any[] = [];
 
-  show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
+  success(message: string) {
+    this.show(message, { classname: 'bg-success text-light' });
+  }
+
+  error(message: string) {
+    this.show(message, { classname: 'bg-danger text-light' });
+  }
+
+  private show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
     this.toasts.push({ textOrTpl, ...options });
   }
 

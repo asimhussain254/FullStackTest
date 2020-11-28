@@ -1,11 +1,15 @@
+<!-- <app-toasts aria-live="polite" aria-atomic="true"></app-toasts> -->
 <ngb-toast
   *ngFor="let toast of toastService.toasts"
-  [header]="toast.header"
+  class="ngb-toasts"
+  [class]="toast.classname"
   [autohide]="true"
   [delay]="toast.delay || 5000"
-  (hide)="toastService.remove(toast)"
-  >{{ toast.body }}</ngb-toast
+  (hidden)="toastService.remove(toast)"
 >
+  {{ toast.textOrTpl }}
+</ngb-toast>
+
 <app-nav-menu></app-nav-menu>
 <div class="container">
   <router-outlet></router-outlet>
