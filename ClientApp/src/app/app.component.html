@@ -1,4 +1,12 @@
-<ngb-toast></ngb-toast>
+<ngb-toast
+  *ngFor="let toast of toastService.toasts"
+  [header]="toast.header"
+  [autohide]="true"
+  [delay]="toast.delay || 5000"
+  (hide)="toastService.remove(toast)"
+  >{{ toast.body }}</ngb-toast
+>
+<app-nav-menu></app-nav-menu>
 <div class="container">
   <app-user-details></app-user-details>
 </div>

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -13,6 +13,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { InputFormComponent } from './user-details/input-form/input-form.component';
 import { UsersListComponent } from './user-details/users-list/users-list.component';
+import { CustomNgbDateNativeUTCAdapter } from './services';
 
 @NgModule({
   declarations: [
@@ -35,9 +36,9 @@ import { UsersListComponent } from './user-details/users-list/users-list.compone
       { path: 'fetch-data', component: FetchDataComponent },
     ]),
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [{ provide: NgbDateAdapter, useClass: CustomNgbDateNativeUTCAdapter }],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using FullStackTest.Data;
 using FullStackTest.ViewModels;
+using FullStackTest.Services;
 
 namespace FullStackTest.Controllers
 {
@@ -14,181 +9,71 @@ namespace FullStackTest.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly IUserService _userService;
 
-        public UserController(UserContext context)
+        public UserController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
-        [HttpGet]
-        [Route("api/Language")]
-        public IEnumerable<Language> GetLanguage()
-        {
-            return _context.Language;
-        }
+
         // GET: api/User
         [HttpGet]
-        public IEnumerable<UserViewModel> GetUser()
+        public ActionResult<List<UserViewModel>> GetUser()
         {
+            var users = _userService.Read();
 
-            var userVmList = _context.User.Include(x => x.Languages).Select(x => new UserViewModel
-            {
-                id = x.Id,
-                Title = x.Title,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                DateOfBirth = x.DateOfBirth,
-                Email = x.Email,
-                Phone = x.Phone,
-                Gender = x.Gender,
-                Languages = x.Languages.Select(x => x.LanguageId).ToList(),
-                LanguagesTitles = x.Languages.Select(x => x.Language.Title).ToList()
-            }).ToList();
-            return userVmList;
+            return Ok(users);
         }
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser([FromRoute] int id)
+        public ActionResult<UserViewModel> GetUser([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            var User = await _context.User.FindAsync(id);
-
-            if (User == null)
-            {
-                return NotFound();
-            }
+            var user = _userService.Read(id);
 
             return Ok(User);
-        }
-
-        // PUT: api/User/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] UserViewModel userVm)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var user = _context.User.Find(id);
-            var languages = _context.UserLanguages.Where(x => x.UserId == user.Id);
-
-            if (user == null)
-            {
-                return BadRequest("User does not exist");
-            }
-            //Update data in User Entity
-            user.Title = userVm.Title;
-            user.FirstName = userVm.FirstName;
-            user.LastName = userVm.LastName;
-            user.DateOfBirth = userVm.DateOfBirth;
-            user.Email = userVm.Email;
-            user.Phone = userVm.Phone;
-            user.Gender = userVm.Gender;
-            // remove current languages of users
-            _context.UserLanguages.RemoveRange(languages);
-            await _context.SaveChangesAsync();
-            // Make list of Languages user select now
-            var userlanguages = userVm.Languages.Select(language => new UserLanguage
-            {
-                LanguageId = (int)language,
-                UserId = user.Id
-            }).ToList();
-            // Add Languages to UserLanguages Entity
-            await _context.UserLanguages.AddRangeAsync(userlanguages);
-            await _context.SaveChangesAsync();
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/User
         [HttpPost]
-        public async Task<IActionResult> PostUser([FromBody] UserViewModel userVm)
+        public ActionResult<UserViewModel> PostUser([FromBody] UserViewModel userVm)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new User
+            var newUser = _userService.Create(userVm);
+
+            return Ok(newUser);
+
+        }
+
+
+        // PUT: api/User/5
+        [HttpPut("{id}")]
+        public ActionResult<UserViewModel> PutUser([FromRoute] int id, [FromBody] UserViewModel userVm)
+        {
+            if (!ModelState.IsValid)
             {
-                Title = userVm.Title,
-                FirstName = userVm.FirstName,
-                LastName = userVm.LastName,
-                DateOfBirth = userVm.DateOfBirth,
-                Email = userVm.Email,
-                Phone = userVm.Phone,
-                Gender = userVm.Gender,
-            };
+                return BadRequest(ModelState);
+            }
 
-            await _context.User.AddAsync(user);
-            await _context.SaveChangesAsync();
+            var updatedUser = _userService.Update(id, userVm);
 
-            var languages = userVm.Languages.Select(language => new UserLanguage
-            {
-                LanguageId = (int)language,
-                UserId = user.Id
-            }).ToList();
-
-            await _context.UserLanguages.AddRangeAsync(languages);
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new
-            {
-                id = user.Id
-            }, user);
+            return Ok(updatedUser);
         }
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        public ActionResult<bool> DeleteUser([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            var user = await _context.User.FindAsync(id);
-            // var languages = _context.UserLanguage.Where(i => i.UserId == user.Id);
-            var languages = _context.UserLanguages.Where(i => i.UserId == user.Id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            var success = _userService.Delete(id);
 
-            _context.User.Remove(user);
-            _context.UserLanguages.RemoveRange(languages);
-            await _context.SaveChangesAsync();
-
-            return Ok(User);
+            return Ok(success);
         }
 
-        private bool UserExists(int id)
-        {
-            return _context.User.Any(e => e.Id == id);
-        }
     }
 }

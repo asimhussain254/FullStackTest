@@ -3,10 +3,10 @@
 <div class="row">
   <div class="col-lg-4">
     <h6 class="text-center">Input User</h6>
-    <app-input-form></app-input-form>
+    <app-input-form [selectedUser]="selectedUser"></app-input-form>
   </div>
   <div class="col-lg-8">
     <h6 class="text-center">Users</h6>
-    <app-users-list></app-users-list>
+    <app-users-list (userChanged)="onUserChange($event)"></app-users-list>
   </div>
 </div>

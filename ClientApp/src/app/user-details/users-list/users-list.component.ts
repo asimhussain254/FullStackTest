@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { IUser } from '../user.model';
 import { UserService } from '../user.service';
@@ -9,6 +9,8 @@ import { UserService } from '../user.service';
   styleUrls: ['./users-list.component.css'],
 })
 export class UsersListComponent implements OnInit {
+  @Output() userChanged = new EventEmitter<IUser>();
+
   constructor(private userService: UserService) {}
 
   ngOnInit() {
@@ -17,10 +19,6 @@ export class UsersListComponent implements OnInit {
 
   get users() {
     return this.userService.userList;
-  }
-
-  setUser(user: IUser) {
-    this.userService.selectedUser = { ...user };
   }
 
   deleteUser(user: IUser) {

@@ -1,27 +1,37 @@
 <table class="table text-center">
-  <tr>
-    <td><b>Name</b></td>
-    <td><b>Email</b></td>
-    <td><b>Gender</b></td>
-    <td><b>Phone</b></td>
-    <td><b>DOB</b></td>
-    <td><b>Languages</b></td>
-    <td><b>Actions</b></td>
-  </tr>
-  <tr *ngFor="let user of users">
-    <td class="row">
-      <p *ngIf="user.title === 1">Mr. {{ user.firstName }} {{ user.lastName }}</p>
-      <p *ngIf="user.title === 2">Mrs. {{ user.firstName }} {{ user.lastName }}</p>
-    </td>
-    <td>{{ user.email }}</td>
-    <td *ngIf="user.gender === 1">Male</td>
-    <td *ngIf="user.gender === 2">Female</td>
-    <td>{{ user.phone }}</td>
-    <td>{{ user.dateOfBirth }}</td>
-    <td>{{ user.languagesTitles.join(', ') }}</td>
-    <td>
-      <i class="fas fa-trash-alt fa-lg text-danger" (click)="deleteUser(user)"></i>
-      <i class="fas fa-pencil fa-lg text-primary" (click)="setUser(user)"></i>
-    </td>
-  </tr>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Gender</th>
+      <th>Phone</th>
+      <th>DOB</th>
+      <th>Languages</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>
+        <p *ngIf="user.title === 1">Mr. {{ user.firstName }} {{ user.lastName }}</p>
+        <p *ngIf="user.title === 2">Mrs. {{ user.firstName }} {{ user.lastName }}</p>
+      </td>
+      <td>{{ user.email }}</td>
+      <td *ngIf="user.gender === 1">Male</td>
+      <td *ngIf="user.gender === 2">Female</td>
+      <td>{{ user.phone }}</td>
+      <td>{{ user.dateOfBirth }}</td>
+      <td>{{ user.languagesTitles.join(', ') }}</td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn-danger" (click)="deleteUser(user)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="btn btn-primary" (click)="userChanged.next(user)">
+            <i class="fas fa-pencil"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
 </table>

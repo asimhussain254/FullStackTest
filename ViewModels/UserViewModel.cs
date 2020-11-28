@@ -10,7 +10,7 @@ namespace FullStackTest.ViewModels
 {
     public class UserViewModel
     {
-        public int? id { get; set; }
+        public int? Id { get; set; }
         [Required]
         public Title Title { get; set; }
         [Required]

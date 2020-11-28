@@ -19,6 +19,7 @@ namespace FullStackTest.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         public IEnumerable<LanguageViewModel> GetLanguage()
         {
@@ -27,6 +28,7 @@ namespace FullStackTest.Controllers
                 id = x.Id,
                 Title = x.Title,
             });
+
             return languageVmList;
         }
     }

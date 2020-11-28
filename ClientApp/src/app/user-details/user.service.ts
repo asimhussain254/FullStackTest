@@ -8,7 +8,6 @@ import { IUser } from './user.model';
   providedIn: 'root',
 })
 export class UserService {
-  selectedUser: IUser = { id: 0, languages: [] } as any;
   userList: IUser[];
   languageList: ILanguage[];
   constructor(private httpClient: HttpClient) {}
@@ -29,6 +28,7 @@ export class UserService {
   updateUser(userId: number, user: IUser) {
     return this.httpClient.put(`api/User/${userId}`, user);
   }
+
   deleteUser(userId: number) {
     return this.httpClient.delete(`api/User/${userId}`);
   }

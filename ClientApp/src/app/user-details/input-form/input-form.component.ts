@@ -1,16 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { ILanguage } from '../language.model';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 
+import { ILanguage } from '../language.model';
 import { ToastService } from './../../toast.service';
 import { UserService } from '../user.service';
+import { IUser } from '../user.model';
 
 @Component({
   selector: 'app-input-form',
   templateUrl: './input-form.component.html',
   styleUrls: ['./input-form.component.css'],
 })
-export class InputFormComponent implements OnInit {
+export class InputFormComponent implements OnInit, OnChanges {
+  @Input() selectedUser: IUser;
+
   userForm: FormGroup;
   constructor(public userService: UserService, private toastService: ToastService) {}
 
@@ -21,7 +24,7 @@ export class InputFormComponent implements OnInit {
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      phoneNumber: new FormControl('', [
+      phone: new FormControl('', [
         Validators.required,
         // Validators.pattern(
         //   '(^+[0-9]{2}|^+[0-9]{2}(0)|^(+[0-9]{2})(0)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9-s]{10}$)',
@@ -30,7 +33,12 @@ export class InputFormComponent implements OnInit {
       dateOfBirth: new FormControl(null, [Validators.required]),
       gender: new FormControl(null, [Validators.required]),
     });
-    this.resetForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.userForm) {
+      this.userForm.patchValue(this.selectedUser);
+    }
   }
 
   getLName() {
@@ -46,48 +54,43 @@ export class InputFormComponent implements OnInit {
     return this.userForm.get('dateOfBirth');
   }
 
-  get userData() {
-    return this.userService.selectedUser;
-  }
   get languages() {
     return { ...this.userService.languageList };
   }
 
   getLanguageModel(langualge: ILanguage) {
-    return this.userData.languages.find((x) => x === langualge.id);
+    return this.selectedUser && this.selectedUser.languages.find((x) => x === langualge.id);
   }
 
   onLanguageChange(checked, language: ILanguage) {
     if (checked) {
-      this.userData.languages.push(language.id);
+      this.selectedUser.languages.push(language.id);
     } else {
-      this.userData.languages = this.userData.languages.filter((l) => l !== language.id);
+      this.selectedUser.languages = this.selectedUser.languages.filter((l) => l !== language.id);
     }
   }
-  updateDate(date: Date) {
-    this.userData.dateOfBirth = date;
-  }
+
   onSubmit() {
     // Destructure value and valid properties from form object
     const { value, valid } = this.userForm;
     if (valid) {
-      const isNew = this.userService.selectedUser.id === 0;
+      const existing = this.selectedUser.id > 0;
       let subscription;
-      if (isNew) {
-        subscription = this.userService.createUser({
-          ...value,
-          languages: this.userData.languages,
-        });
-      } else {
-        subscription = this.userService.updateUser(this.userService.selectedUser.id, {
+      if (existing) {
+        subscription = this.userService.updateUser(this.selectedUser.id, {
           ...value,
           id: null,
-          languages: this.userData.languages,
+          languages: this.selectedUser.languages,
+        });
+      } else {
+        subscription = this.userService.createUser({
+          ...value,
+          languages: this.selectedUser.languages,
         });
       }
       subscription.subscribe(
-        (res) => {
-          this.resetForm();
+        () => {
+          this.reset();
           this.userService.getUsers();
           this.toastService.show('I am a success toast', {
             classname: 'bg-success text-light',
@@ -101,19 +104,8 @@ export class InputFormComponent implements OnInit {
     }
   }
 
-  private resetForm() {
+  private reset() {
     this.userForm.reset();
-    this.userService.selectedUser = {
-      id: 0,
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      dateOfBirth: null,
-      title: 0,
-      gender: 0,
-      languages: [],
-      languagesTitles: [],
-    };
+    this.selectedUser = { title: 0, languages: [] } as IUser;
   }
 }
