@@ -56,18 +56,26 @@
     <div class="form-group has-feedback">
       <!-- <span class="fa fa-id-card form-control-feedback"></span> -->
       <label>Gender</label>
-      <div class="form-row">
-        <div class="col-md-6">
-          <label class="radio-inline">
-            <input name="gender" type="radio" [value]="1" formControlName="gender" />
-            Male
-          </label>
+      <div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="male"
+            [value]="1"
+          />
+          <label class="form-check-label" for="male">Male</label>
         </div>
-        <div class="col-md-6">
-          <label class="radio-inline">
-            <input name="gender" type="radio" [value]="2" formControlName="gender" />
-            Female
-          </label>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="female"
+            [value]="2"
+          />
+          <label class="form-check-label" for="female">Female</label>
         </div>
       </div>
     </div>

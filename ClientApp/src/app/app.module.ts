@@ -8,8 +8,6 @@ import { NgbDateAdapter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { InputFormComponent } from './user-details/input-form/input-form.component';
 import { UsersListComponent } from './user-details/users-list/users-list.component';
@@ -20,8 +18,6 @@ import { CustomNgbDateNativeUTCAdapter } from './services';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     UserDetailsComponent,
     InputFormComponent,
     UsersListComponent,
@@ -30,11 +26,13 @@ import { CustomNgbDateNativeUTCAdapter } from './services';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([
-    { path: '', component: HomeComponent, pathMatch: 'full' },
-    { path: 'counter', component: CounterComponent },
-    { path: 'fetch-data', component: FetchDataComponent },
-], { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(
+      [
+        { path: '', component: UserDetailsComponent, pathMatch: 'full' },
+        // { path: 'fetch-data', component: FetchDataComponent },
+      ],
+      { relativeLinkResolution: 'legacy' },
+    ),
     NgbModule,
     ReactiveFormsModule,
   ],
