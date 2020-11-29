@@ -1,4 +1,4 @@
-import { ILanguage } from './language.model';
+import { ILanguage } from '../languagesdetails/language.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 

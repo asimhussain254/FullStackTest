@@ -4,23 +4,29 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgbDateAdapter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CustomNgbDateNativeUTCAdapter } from './services';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { UsersListComponent } from './user-details/users-list/users-list.component';
 import { HomeComponent } from './home/home.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { LanguagesdetailsComponent } from './languagesdetails/languagesdetails.component';
 import { InputFormComponent } from './user-details/input-form/input-form.component';
-import { UsersListComponent } from './user-details/users-list/users-list.component';
-import { CustomNgbDateNativeUTCAdapter } from './services';
+import { LanguageInputComponent } from './languagesdetails/language-input/language-input.component';
+import { LanguageListComponent } from './languagesdetails/language-list/language-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    UserDetailsComponent,
+    LanguagesdetailsComponent,
     InputFormComponent,
+    UserDetailsComponent,
     UsersListComponent,
+    LanguageInputComponent,
+    LanguageListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -29,7 +35,8 @@ import { CustomNgbDateNativeUTCAdapter } from './services';
     RouterModule.forRoot(
       [
         { path: '', component: UserDetailsComponent, pathMatch: 'full' },
-        // { path: 'fetch-data', component: FetchDataComponent },
+        { path: 'users', component: UsersListComponent },
+        { path: 'languages', component: LanguagesdetailsComponent },
       ],
       { relativeLinkResolution: 'legacy' },
     ),

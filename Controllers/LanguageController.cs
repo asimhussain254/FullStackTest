@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using FullStackTest.Data;
 using FullStackTest.ViewModels;
+using FullStackTest.Services;
 
 namespace FullStackTest.Controllers
 {
@@ -14,22 +10,59 @@ namespace FullStackTest.Controllers
     [ApiController]
     public class LanguageController : ControllerBase
     {
-        private readonly UserContext _context;
-        public LanguageController(UserContext context)
+        private readonly ILanguageService _languageService;
+        public LanguageController(ILanguageService languageService)
         {
-            _context = context;
+            _languageService = languageService;
         }
 
         [HttpGet]
-        public IEnumerable<LanguageViewModel> GetLanguage()
+        public ActionResult<List<LanguageViewModel>> GetLanguage()
         {
-            var languageVmList = _context.Language.Select(x => new LanguageViewModel
-            {
-                id = x.Id,
-                Title = x.Title,
-            });
+            var languageVmList = _languageService.Read();
 
-            return languageVmList;
+            return Ok(languageVmList);
+        }
+        [HttpGet("{id}")]
+        public ActionResult<LanguageViewModel> GetLanguage([FromRoute] int id)
+        {
+            var languageVmList = _languageService.Read(id);
+
+            return Ok(languageVmList);
+        }
+        [HttpPost]
+        public ActionResult<LanguageViewModel> PostLanguage([FromBody] LanguageViewModel languageVm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var newLanguage = _languageService.Create(languageVm);
+
+            return Ok(newLanguage);
+
+        }
+        [HttpPut("{id}")]
+        public ActionResult<LanguageViewModel> PutLanguage([FromRoute] int id, [FromBody] LanguageViewModel languageVm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedLanguage = _languageService.Update(id, languageVm);
+
+            return Ok(updatedLanguage);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<bool> DeleteLanguage4([FromRoute] int id)
+        {
+
+            var success = _languageService.Delete(id);
+
+            return Ok(success);
         }
     }
 }

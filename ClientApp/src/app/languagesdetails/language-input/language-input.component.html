@@ -1,0 +1,18 @@
+{{languageForm.value | json}}
+<form [formGroup]="languageForm" (ngSubmit)="onSubmit()">
+    <div class="form-group has-feedback">
+        <label>Title</label>
+        <input class="form-control" type="text" formControlName="title" placeholder="Title" />
+        <i class="text-danger" *ngIf="title.invalid && title.touched">Title is not valid...</i>
+      </div>
+      <div class="form-group text-center">
+        <button
+          type="submit"
+          [disabled]="!languageForm.valid"
+          class="btn btn-success btn-lg col-md-6 col-md-offset-3"
+        >
+          <i class="fas fa-database"></i>
+          Submit
+        </button>
+      </div>
+</form>

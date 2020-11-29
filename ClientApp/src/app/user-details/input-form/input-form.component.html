@@ -1,32 +1,32 @@
+{{userForm.value | json}}
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
   <div class="col-md-12">
     <div class="form-group has-feedback">
-      <label>Name</label>
-      <div class="form-row">
-        <div class="col-md-3">
-          <select name="title" class="form-control" formControlName="title">
-            <option [ngValue]="0">Select...</option>
-            <option [ngValue]="1">Mr.</option>
-            <option [ngValue]="2">Mrs.</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <input class="form-control" type="text" formControlName="firstName" placeholder="First" />
-        </div>
-        <div class="col-md-5">
-          <input class="form-control" type="text" formControlName="lastName" placeholder="Last" />
-        </div>
-      </div>
-      <!-- <span class="fa fa-user form-control-feedback"></span> -->
+      <label>Title</label>
+      <select name="title" class="form-control" formControlName="title">
+        <option [ngValue]="0">Select...</option>
+        <option [ngValue]="1">Mr.</option>
+        <option [ngValue]="2">Mrs.</option>
+      </select>
+      <i class="text-danger" *ngIf="title.invalid && title.touched">Please select title...</i>
+    </div>
+    <div class="form-group has-feedback">
+      <label>First Name</label>
+      <input class="form-control" type="text" formControlName="firstName" placeholder="First Name" />
+      <i class="text-danger" *ngIf="firstName.invalid && firstName.touched">First Name is not valid...</i>
+    </div>
+    <div class="form-group has-feedback">
+      <label>Last Name</label>
+      <input class="form-control" type="text" formControlName="lastName" placeholder="Last Name" />
+      <i class="text-danger" *ngIf="lastName.invalid && lastName.touched">Last Name is not valid...</i>
     </div>
     <div class="form-group has-feedback">
       <label>Email</label>
-      <input class="form-control" type="text" formControlName="email" placeholder="First" />
-      <!-- <span class="fa fa-envelope form-control-feedback"></span> -->
+      <input class="form-control" type="text" formControlName="email" placeholder="Email" />
+      <i class="text-danger" *ngIf="email.invalid && email.touched">Email is not valid...</i>
     </div>
     <div class="form-group has-feedback">
-      <!-- <label>Date Of Birth</label>
-      <input class="form-control ui-datepicker" type="text" [formControlName]="dateOfBirth" /> -->
+      <label>Date Of Birth</label>
       <div class="form-group">
         <div class="input-group">
           <input
@@ -39,22 +39,23 @@
           />
           <div class="input-group-append">
             <button
-              class="btn btn-outline-secondary uk-icon-calendar-check-o"
+              class="btn btn-outline-secondary bg-light-gray uk-icon-calendar-check-o"
               (click)="d.toggle()"
               type="button"
-            ></button>
+            >
+            <i class="far fa-calendar-alt" ></i>
+          </button>
           </div>
         </div>
+      <i class="text-danger" *ngIf="dateOfBirth.invalid && dateOfBirth.touched">Date of Birth is not valid...</i>
       </div>
-      <!-- <span class="fa fa-envelope form-control-feedback"></span> -->
     </div>
     <div class="form-group has-feedback">
       <label>Phone No.</label>
       <input class="form-control" type="text" formControlName="phone" />
-      <!-- <span class="fa fa-lock form-control-feedback"></span> -->
+      <i class="text-danger" *ngIf="phone.invalid && phone.touched">Phone Number is not valid...</i>
     </div>
     <div class="form-group has-feedback">
-      <!-- <span class="fa fa-id-card form-control-feedback"></span> -->
       <label>Gender</label>
       <div>
         <div class="form-check form-check-inline">
@@ -78,6 +79,7 @@
           <label class="form-check-label" for="female">Female</label>
         </div>
       </div>
+      <i class="text-danger" *ngIf="gender.invalid && gender.touched">Please choose your gender...</i>
     </div>
     <div class="form-group has-feedback">
       <label>Languages</label>
@@ -96,6 +98,7 @@
           </label>
         </div>
       </div>
+      <!-- <i class="text-danger" *ngIf=" && language.touched">Select at least one Language...</i> -->
     </div>
     <div class="form-group text-center">
       <button

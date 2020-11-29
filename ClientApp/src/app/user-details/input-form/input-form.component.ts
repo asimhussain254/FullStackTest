@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
-import { ILanguage } from '../language.model';
+import { ILanguage } from '../../languagesdetails/language.model';
 import { ToastService } from './../../toast.service';
 import { UserService } from '../user.service';
 import { IUser } from '../user.model';
@@ -20,18 +20,18 @@ export class InputFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.userService.getLanguages();
     this.userForm = new FormGroup({
-      title: new FormControl('', [Validators.required]),
+      title: new FormControl(0, [Validators.required, Validators.min(1)]),
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       phone: new FormControl('', [
         Validators.required,
-        // Validators.pattern(
-        //   '(^+[0-9]{2}|^+[0-9]{2}(0)|^(+[0-9]{2})(0)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9-s]{10}$)',
-        // ),
+        Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im),
       ]),
-      dateOfBirth: new FormControl(null, [Validators.required]),
-      gender: new FormControl(null, [Validators.required]),
+      dateOfBirth: new FormControl('', [
+        Validators.required
+      ]),
+      gender: new FormControl('', [Validators.required]),
     });
   }
 
@@ -41,19 +41,30 @@ export class InputFormComponent implements OnInit, OnChanges {
     }
   }
 
-  getLName() {
-    return this.userForm.get('lasttName');
+  get title() {
+    return this.userForm.get('title');
   }
-  getEmail() {
+  get firstName() {
+    return this.userForm.get('firstName');
+  }
+  get lastName() {
+    return this.userForm.get('lastName');
+  }
+  get email() {
     return this.userForm.get('email');
   }
-  getPhone() {
-    return this.userForm.get('phoneNumber');
+  get phone() {
+    return this.userForm.get('phone');
   }
-  getDOB() {
+  get dateOfBirth() {
     return this.userForm.get('dateOfBirth');
   }
-
+  get gender() {
+    return this.userForm.get('gender');
+  }
+  get language() {
+    return this.userForm.get('language');
+  }
   get languages() {
     return { ...this.userService.languageList };
   }
@@ -90,9 +101,9 @@ export class InputFormComponent implements OnInit, OnChanges {
       }
       subscription.subscribe(
         () => {
-          this.reset();
           this.userService.getUsers();
-          this.toastService.success('I am a success toast');
+          this.toastService.success(`${this.selectedUser.firstName} ${this.selectedUser.lastName} is updated...`);
+          this.reset();
         },
         (err) => {
           console.log(err);
