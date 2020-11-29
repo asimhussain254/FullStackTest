@@ -19,12 +19,15 @@ export class LanguageInputComponent implements OnInit {
     this.languageForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
     });
+    this.reset();
   }
-  OnChanges(changes: SimpleChanges){
+
+  ngOnChanges(changes: SimpleChanges) {
     if (this.languageForm) {
-      this.languageForm.patchValue(this.languageService.selectedLanguage);
+      this.languageForm.patchValue(this.selectedLanguage);
     }
   }
+
   get title() {
     return this.languageForm.get('title');
   }
@@ -32,25 +35,25 @@ export class LanguageInputComponent implements OnInit {
     // Destructure value and valid properties from form object
     const { value, valid } = this.languageForm;
     if (valid) {
-      this.selectedLanguage = value as ILanguage;
       const existing = this.selectedLanguage.id > 0;
       let subscription;
       if (existing) {
-        subscription = this.languageService.updateLanguage(this.languageService.selectedLanguage.id, {
-          ...value,
-          id: null,
-        });
+        subscription = this.languageService.updateLanguage(
+          this.selectedLanguage.id,
+          {
+            ...value,
+            id: null,
+          },
+        );
       } else {
         subscription = this.languageService.createLanguage({
-          ...value
+          ...value,
         });
       }
       subscription.subscribe(
         () => {
           this.languageService.getLanguages();
-          this.toastService.success(
-            `${this.languageService.selectedLanguage.title} is updated...`,
-          );
+          this.toastService.success(`${this.selectedLanguage.title} is updated...`);
           this.reset();
         },
         (err) => {
@@ -61,6 +64,6 @@ export class LanguageInputComponent implements OnInit {
   }
   private reset() {
     this.languageForm.reset();
-    this.languageService.selectedLanguage = { title: '' } as ILanguage;
+    this.selectedLanguage = {id:0,title:''} as ILanguage;
   }
 }

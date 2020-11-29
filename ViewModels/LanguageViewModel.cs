@@ -10,7 +10,7 @@ namespace FullStackTest.ViewModels
 {
     public class LanguageViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         [Required]
         public string Title { get; set; }
     }
