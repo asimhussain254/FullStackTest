@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgbDateAdapter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomNgbDateNativeUTCAdapter } from './services';
+import { QuillModule } from 'ngx-quill';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -15,6 +16,7 @@ import { LanguagesdetailsComponent } from './languagesdetails/languagesdetails.c
 import { InputFormComponent } from './user-details/input-form/input-form.component';
 import { LanguageInputComponent } from './languagesdetails/language-input/language-input.component';
 import { LanguageListComponent } from './languagesdetails/language-list/language-list.component';
+import { TextEditorComponent } from './text-editor/text-editor.component';
 
 @NgModule({
   declarations: [
@@ -26,17 +28,20 @@ import { LanguageListComponent } from './languagesdetails/language-list/language
     UserDetailsComponent,
     UsersListComponent,
     LanguageInputComponent,
-    LanguageListComponent
+    LanguageListComponent,
+    TextEditorComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    QuillModule.forRoot(),
     RouterModule.forRoot(
       [
         { path: '', component: UserDetailsComponent, pathMatch: 'full' },
         { path: 'users', component: UsersListComponent },
         { path: 'languages', component: LanguagesdetailsComponent },
+        { path: 'text-editor', component: TextEditorComponent },
       ],
       { relativeLinkResolution: 'legacy' },
     ),
@@ -46,4 +51,4 @@ import { LanguageListComponent } from './languagesdetails/language-list/language
   providers: [{ provide: NgbDateAdapter, useClass: CustomNgbDateNativeUTCAdapter }],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
